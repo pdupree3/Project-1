@@ -1,93 +1,93 @@
-const problemElement = document.querySelector(".problem")
-const ourForm = document.querySelector(".our-form")
-const ourField = document.querySelector(".our-field")
-const pointsNeeded = document.querySelector(".points-needed")
-const mistakesAllowed = document.querySelector(".mistakes-allowed")
-const progressBar = document.querySelector(".progress-inner")
-const endMessage = document.querySelector(".end-message")
-const resetButton = document.querySelector(".reset-button")
+const probEl = document.querySelector(".problem")
+const form1 = document.querySelector(".our-form")
+const field1 = document.querySelector(".our-field")
+const neededPts = document.querySelector(".points-needed")
+const numOfMistakes = document.querySelector(".mistakes-allowed")
+const progBar = document.querySelector(".progress-inner")
+const gameEnd = document.querySelector(".end-message")
+const startOver = document.querySelector(".reset-button")
 
-let state = {
+let start = {
   score: 0,
   wrongAnswers: 0
 }
 
-function updateProblem() {
-  state.currentProblem = generateProblem()
-  problemElement.innerText = `${state.currentProblem.numberOne} ${state.currentProblem.operator} ${state.currentProblem.numberTwo}`
-  ourField.value = ""
-  ourField.focus()
+function updateProb() {
+  start.currentProblem = createProb()
+  probEl.innerText = `${start.currentProblem.numberOne} ${start.currentProblem.operator} ${start.currentProblem.numberTwo}`
+  field1.value = ""
+  field1.focus()
 }
 
- updateProblem()
+ updateProb()
 
-function generateNumber(max) {
+function createNumber(max) {
   return Math.floor(Math.random() * (max + 1))
 }
 
-function generateProblem() {
+function createProb() {
   return {
-    numberOne: generateNumber(10),
-    numberTwo: generateNumber(10),
-    operator: ['+', '-', 'x'][generateNumber(2)]
+    numberOne: createNumber(10),
+    numberTwo: createNumber(10),
+    operator: ['+', '-', 'x'][createNumber(2)]
   }
 }
 
-ourForm.addEventListener("submit", handleSubmit)
+form1.addEventListener("submit", handleSubmit)
 
 function handleSubmit(e) {
   e.preventDefault()
 
   let correctAnswer
-  const p = state.currentProblem
+  const p = start.currentProblem
   if (p.operator == "+") correctAnswer = p.numberOne + p.numberTwo
   if (p.operator == "-") correctAnswer = p.numberOne - p.numberTwo
   if (p.operator == "x") correctAnswer = p.numberOne * p.numberTwo
 
-  if (parseInt(ourField.value, 10) === correctAnswer) {
-    state.score++
-    pointsNeeded.textContent = 10 - state.score
-    updateProblem()
-    renderProgressBar()
+  if (parseInt(field1.value, 10) === correctAnswer) {
+    start.score++
+    neededPts.textContent = 10 - start.score
+    updateProb()
+    progBarMove()
   } else {
-    state.wrongAnswers++
-    mistakesAllowed.textContent = 2 - state.wrongAnswers
-    problemElement.classList.add("animate-wrong")
-    setTimeout(() => problemElement.classList.remove("animate-wrong"), 451)
+    start.wrongAnswers++
+    numOfMistakes.textContent = 2 - start.wrongAnswers
+    probEl.classList.add("animate-wrong")
+    setTimeout(() => probEl.classList.remove("animate-wrong"), 451)
   }
-  checkLogic()
+  checkAns()
 }
 
-function checkLogic() {
+function checkAns() {
   // if you won
-  if (state.score === 10) {
-    endMessage.textContent = "YOU WIN!!!"
+  if (start.score === 10) {
+    gameEnd.textContent = "YOU WIN!!!"
     document.body.classList.add("overlay-is-open")
-    setTimeout(() => resetButton.focus(), 331)
+    setTimeout(() => startOver.focus(), 331)
   }
 
   // if you lost
-  if (state.wrongAnswers === 3) {
-    endMessage.textContent = "You LOSE!!! Try again!"
+  if (start.wrongAnswers === 3) {
+    gameEnd.textContent = "You LOSE!!! Try again!"
     document.body.classList.add("overlay-is-open")
-    setTimeout(() => resetButton.focus(), 331)
+    setTimeout(() => startOver.focus(), 331)
   }
 }
 
-resetButton.addEventListener("click", resetGame)
+startOver.addEventListener("click", resetGame)
 
 function resetGame() {
   document.body.classList.remove("overlay-is-open")
-  updateProblem()
-  state.score = 0
-  state.wrongAnswers = 0
-  pointsNeeded.textContent = 10
-  mistakesAllowed.textContent = 2
-  renderProgressBar()
+  updateProb()
+  start.score = 0
+  start.wrongAnswers = 0
+  neededPts.textContent = 10
+  numOfMistakes.textContent = 2
+  progBarMove()
 }
 
-function renderProgressBar() {
-  progressBar.style.transform = `scaleX(${state.score / 10})`
+function progBarMove() {
+  progBar.style.transform = `scaleX(${start.score / 10})`
 }
-progressBar.style.background = 'red';
-progressBar.style.textAlign = 'bottom';
+progBar.style.background = 'red';
+progBar.style.textAlign = 'bottom';
