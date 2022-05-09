@@ -21,7 +21,7 @@ As a player, I want the option to restart at the end of a game/round.
 As a player, I want the graphic to increase when I'm correct and decrease if I'm wrong.
 
 
-                // = bronze level
+                Future Goals
 
 // As a player, I want to be able to choose different colored backgrounds to select my favorite color.
 //As a player, I want a timer to show me how long a game/round lasts. 
